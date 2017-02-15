@@ -32,6 +32,7 @@ open class WebSocketSwampTransport: SwampTransport, WebSocketDelegate {
     public init(wsEndpoint: URL, proto: WampProtocol, customSerializer: SwampSerializer? = nil) {
         
         socket = WebSocket(url: wsEndpoint, protocols: [proto.rawValue])
+        
         let guessedSerializer: SwampSerializer!
         
         switch (proto) {
@@ -57,6 +58,11 @@ open class WebSocketSwampTransport: SwampTransport, WebSocketDelegate {
     // MARK: Transport
     open func connect() {
         self.socket.connect()
+    }
+    
+    open func setCertificates(_ certificates: [Data]) {
+        let sslCerts = TrustManager.certificates.flatMap { SSLCert(data: $0) }
+        self.socket.security = SSLSecurity(certs: sslCerts, usePublicKeys: false)
     }
     
     open func setConnectHeaders(headers: [String : String]) {
