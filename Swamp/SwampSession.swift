@@ -73,7 +73,7 @@ open class SwampSession: SwampTransportDelegate {
     // MARK: Constants
     // No callee role for now
     fileprivate let supportedRoles: [SwampRole] = [SwampRole.Caller, SwampRole.Subscriber, SwampRole.Publisher]
-    fileprivate let clientName = "Swamp-dev-0.1.0"
+    open var clientName = "Swamp-dev-0.1.0"
 
     // MARK: Members
     fileprivate let realm: String
