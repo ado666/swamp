@@ -58,6 +58,8 @@ open class Subscription {
 //    private let session: SwampSession
 //}
 
+let swampVersion = "Swamp/0.1.1"
+
 public protocol SwampSessionDelegate {
     func swampSessionHandleChallenge(_ authMethod: String, extra: [String: Any]) -> String
     func swampSessionConnected(_ session: SwampSession, sessionId: Int)
@@ -73,7 +75,7 @@ open class SwampSession: SwampTransportDelegate {
     // MARK: Constants
     // No callee role for now
     fileprivate let supportedRoles: [SwampRole] = [SwampRole.Caller, SwampRole.Subscriber, SwampRole.Publisher]
-    open var clientName = "Swamp-dev-0.1.0"
+    open var clientName = swampVersion
 
     // MARK: Members
     fileprivate let realm: String
