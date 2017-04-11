@@ -49,6 +49,12 @@ open class WebSocketSwampTransport: SwampTransport, WebSocketDelegate {
             self.serializer = guessedSerializer
         }
         socket.delegate = self
+
+        // turn off system certificate validation so we can use our own self-signed certs
+        socket.disableSSLCertValidation = true
+
+        // set the ciphers we will allow (a required
+        socket.enabledSSLCipherSuites = [TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256]
     }
 
     convenience public init(wsEndpoint: URL) {
@@ -61,8 +67,14 @@ open class WebSocketSwampTransport: SwampTransport, WebSocketDelegate {
     }
     
     open func setCertificates(_ certificates: [Data]) {
+
         let sslCerts = TrustManager.certificates.flatMap { SSLCert(data: $0) }
         self.socket.security = SSLSecurity(certs: sslCerts, usePublicKeys: false)
+        if let ssl = self.socket.security {
+            print("ssl = \(ssl)")
+        } else {
+            print("no security")
+        }
     }
     
     open func setConnectHeaders(headers: [String : String]) {
