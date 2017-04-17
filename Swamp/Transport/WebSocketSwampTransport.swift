@@ -68,7 +68,7 @@ open class WebSocketSwampTransport: SwampTransport, WebSocketDelegate {
     
     open func setCertificates(_ certificates: [Data]) {
 
-        let sslCerts = TrustManager.certificates.flatMap { SSLCert(data: $0) }
+        let sslCerts = TrustManager.shared.certificates.flatMap { SSLCert(data: $0) }
         self.socket.security = SSLSecurity(certs: sslCerts, usePublicKeys: false)
         if let ssl = self.socket.security {
             print("ssl = \(ssl)")
