@@ -140,6 +140,7 @@ open class SwampSession: SwampTransportDelegate {
 
     final public func disconnect(_ reason: String="wamp.error.close_realm") {
         self.sendMessage(GoodbyeSwampMessage(details: [:], reason: reason))
+        self.transport.disconnect("closed by client")
     }
 
     // MARK: Caller role
