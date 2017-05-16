@@ -61,7 +61,7 @@ open class Subscription {
 public protocol SwampSessionDelegate {
     func swampSessionHandleChallenge(_ authMethod: String, extra: [String: Any]) -> String
     func swampSessionConnected(_ session: SwampSession, sessionId: Int)
-    func swampSessionEnded(_ reason: String)
+    func swampSessionEnded(_ error: Error?, _ reason: String?)
 }
 
 open class SwampSession: SwampTransportDelegate {
@@ -217,14 +217,7 @@ open class SwampSession: SwampTransportDelegate {
     // MARK: SwampTransportDelegate
 
     open func swampTransportDidDisconnect(_ error: NSError?, reason: String?) {
-        if reason != nil {
-            self.delegate?.swampSessionEnded(reason!)
-        }
-        else if error != nil {
-            self.delegate?.swampSessionEnded("Unexpected error: \(error!.localizedDescription)")
-        } else {
-            self.delegate?.swampSessionEnded("Unknown error.")
-        }
+        self.delegate?.swampSessionEnded(error, reason)
     }
 
     open func swampTransportDidConnectWithSerializer(_ serializer: SwampSerializer) {
