@@ -702,6 +702,7 @@
 		5424B8851DAD576A00236769 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
@@ -719,6 +720,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.iscriptology.Swamp-iOS";
 				PRODUCT_NAME = Swamp;
 				SKIP_INSTALL = YES;
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/CommonCrypto";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
@@ -727,6 +729,7 @@
 		5424B8861DAD576A00236769 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
@@ -744,6 +747,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.iscriptology.Swamp-iOS";
 				PRODUCT_NAME = Swamp;
 				SKIP_INSTALL = YES;
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/CommonCrypto";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
