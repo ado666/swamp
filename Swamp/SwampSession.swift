@@ -31,7 +31,7 @@ public typealias ErrorPublishCallback = (_ details: [String: Any], _ error: Stri
 // TODO: Expose only an interface (like Cancellable) to user
 open class Subscription {
     fileprivate let session: SwampSession
-    let subscription: Int
+    public let subscription: Int
     internal let eventCallback: EventCallback
     fileprivate var isActive: Bool = true
     
@@ -173,8 +173,7 @@ open class SwampSession: SwampTransportDelegate {
         }
     }
 
-    // Internal because only a Subscription object can call this
-    internal func unsubscribe(_ subscription: Int, onSuccess: @escaping UnsubscribeCallback, onError: @escaping ErrorUnsubscribeCallback) {
+    open func unsubscribe(_ subscription: Int, onSuccess: @escaping UnsubscribeCallback, onError: @escaping ErrorUnsubscribeCallback) {
         
         self.requestQueue.async {
             let unsubscribeRequestId = self.generateRequestId()
