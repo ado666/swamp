@@ -78,6 +78,20 @@ open class WebSocketSwampTransport: SwampTransport, WebSocketDelegate {
         self.socket.headers = headers
     }
     
+    open func setCallbackQueue(_ queue: DispatchQueue) {
+        self.socket.callbackQueue = queue
+    }
+    
+    open func setCertificates(_ certificates: [Data]) {
+        let sslCerts = certificates.flatMap { SSLCert(data: $0) }
+        self.socket.security = SSLSecurity(certs: sslCerts, usePublicKeys: false)
+        if let ssl = self.socket.security {
+            print("ssl = \(ssl)")
+        } else {
+            print("no security")
+        }
+    }
+
     open func disconnect(_ reason: String) {
         self.disconnectionReason = reason
         self.socket.disconnect()

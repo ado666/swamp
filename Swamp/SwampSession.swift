@@ -66,7 +66,7 @@ public protocol SwampSessionDelegate {
 
 open class SwampSession: SwampTransportDelegate {
     
-    static let swampVersion = "Swamp/0.1.1"
+    public static let swampVersion = "Swamp/0.2.6"
 
     // MARK: Public typealiases
 
