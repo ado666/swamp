@@ -2,8 +2,8 @@
 //  MsgpackSwampSerializer.swift
 //  Swamp
 //
-//  Created by Eli Burke on 10/12/16.
-//
+
+#if MSGPACK_SUPPORT
 
 import Foundation
 import MessagePack
@@ -159,7 +159,5 @@ open class MsgpackSwampSerializer: SwampSerializer {
             return nil
         }
     }
- 
-    
-    
 }
+#endif // MESSAGEPACK_SUPPORT

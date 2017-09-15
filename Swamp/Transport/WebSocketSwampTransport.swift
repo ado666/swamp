@@ -13,9 +13,11 @@ open class WebSocketSwampTransport: SwampTransport, WebSocketDelegate {
     
     public enum WampProtocol : String {
         case json = "wamp.2.json"
-        case msgpack = "wamp.2.msgpack"
         case jsonBatched = "wamp.2.json.batched"
+        #if MSGPACK_SUPPORT
+        case msgpack = "wamp.2.msgpack"
         case msgpackBatched = "wamp.2.msgpack.batched"
+        #endif
     }
 
     public enum WebsocketMode {
@@ -34,15 +36,21 @@ open class WebSocketSwampTransport: SwampTransport, WebSocketDelegate {
         socket = WebSocket(url: wsEndpoint, protocols: [proto.rawValue])
         
         let guessedSerializer: SwampSerializer!
-        
-        switch (proto) {
+
+        #if MSGPACK_SUPPORT
+            switch (proto) {
             case .json, .jsonBatched:
                 self.mode = .text
                 guessedSerializer = JSONSwampSerializer()
             case .msgpack, .msgpackBatched:
                 self.mode = .binary
                 guessedSerializer = MsgpackSwampSerializer()
-        }
+            }
+        #else
+            self.mode = .text
+            guessedSerializer = JSONSwampSerializer()
+        #endif
+        
         if let customSerializer = customSerializer {
             self.serializer = customSerializer
         } else {
@@ -64,17 +72,6 @@ open class WebSocketSwampTransport: SwampTransport, WebSocketDelegate {
     // MARK: Transport
     open func connect() {
         self.socket.connect()
-    }
-    
-    open func setCertificates(_ certificates: [Data]) {
-
-        let sslCerts = TrustManager.shared.certificates.flatMap { SSLCert(data: $0) }
-        self.socket.security = SSLSecurity(certs: sslCerts, usePublicKeys: false)
-        if let ssl = self.socket.security {
-            print("ssl = \(ssl)")
-        } else {
-            print("no security")
-        }
     }
     
     open func setConnectHeaders(headers: [String : String]) {

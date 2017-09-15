@@ -7,12 +7,7 @@
 //
 
 import Foundation
-
-// import CommonCrypto
-// NOTE: until there a better solution, here is how to add CommonCrypto without ObjC wrappers
-// http://stackoverflow.com/questions/25248598/importing-commoncrypto-in-a-swift-framework
-// Here are swift wrappers for many CommonCrypto functions for reference purposes
-// https://github.com/iosdevzone/IDZSwiftCommonCrypto
+import CommonCrypto
 
 open class SwampCraAuthHelper {
     

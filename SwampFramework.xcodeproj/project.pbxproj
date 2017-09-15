@@ -44,13 +44,9 @@
 		543C065E1DB50E1000FC8257 /* Starscream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 543C065B1DB50E1000FC8257 /* Starscream.framework */; };
 		543C065F1DB50E1000FC8257 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 543C065C1DB50E1000FC8257 /* SwiftyJSON.framework */; };
 		543C06841DB526B200FC8257 /* MsgpackSwampSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543C06831DB526B200FC8257 /* MsgpackSwampSerializer.swift */; };
-		543C06871DB5289C00FC8257 /* MessagePack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 543C06861DB5289C00FC8257 /* MessagePack.framework */; };
 		543C06A71DB5426400FC8257 /* MessagePack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 543C06961DB5406600FC8257 /* MessagePack.framework */; };
 		543C06A91DB5426400FC8257 /* Starscream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 543C064D1DB50C8300FC8257 /* Starscream.framework */; };
 		543C06AA1DB5426400FC8257 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 543C064E1DB50C8300FC8257 /* SwiftyJSON.framework */; };
-		543C06B01DB5428100FC8257 /* MessagePack.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 543C06AC1DB5428100FC8257 /* MessagePack.framework.dSYM */; };
-		543C06B21DB5428100FC8257 /* Starscream.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 543C06AE1DB5428100FC8257 /* Starscream.framework.dSYM */; };
-		543C06B31DB5428100FC8257 /* SwiftyJSON.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 543C06AF1DB5428100FC8257 /* SwiftyJSON.framework.dSYM */; };
 		543C06B41DB542AF00FC8257 /* Swamp.h in Headers */ = {isa = PBXBuildFile; fileRef = 543C06481DB50C5600FC8257 /* Swamp.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		543C06B61DB543EA00FC8257 /* MessagePack.framework.dSYM in Resources */ = {isa = PBXBuildFile; fileRef = 543C06981DB5409700FC8257 /* MessagePack.framework.dSYM */; };
 		543C06B71DB543EA00FC8257 /* Starscream.framework.dSYM in Resources */ = {isa = PBXBuildFile; fileRef = 543C06551DB50D5D00FC8257 /* Starscream.framework.dSYM */; };
@@ -67,9 +63,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
-				543C06B01DB5428100FC8257 /* MessagePack.framework.dSYM in CopyFiles */,
-				543C06B21DB5428100FC8257 /* Starscream.framework.dSYM in CopyFiles */,
-				543C06B31DB5428100FC8257 /* SwiftyJSON.framework.dSYM in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,9 +116,6 @@
 		543C06961DB5406600FC8257 /* MessagePack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessagePack.framework; path = Carthage/Build/Mac/MessagePack.framework; sourceTree = "<group>"; };
 		543C06981DB5409700FC8257 /* MessagePack.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = MessagePack.framework.dSYM; path = Carthage/Build/Mac/MessagePack.framework.dSYM; sourceTree = "<group>"; };
 		543C069F1DB5424200FC8257 /* Swamp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Swamp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		543C06AC1DB5428100FC8257 /* MessagePack.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = MessagePack.framework.dSYM; path = Carthage/Build/Mac/MessagePack.framework.dSYM; sourceTree = "<group>"; };
-		543C06AE1DB5428100FC8257 /* Starscream.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = Starscream.framework.dSYM; path = Carthage/Build/Mac/Starscream.framework.dSYM; sourceTree = "<group>"; };
-		543C06AF1DB5428100FC8257 /* SwiftyJSON.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = SwiftyJSON.framework.dSYM; path = Carthage/Build/Mac/SwiftyJSON.framework.dSYM; sourceTree = "<group>"; };
 		54C2E1BB1DBFD79400246590 /* CommonCrypto.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CommonCrypto.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		54C2E1BE1DBFD79400246590 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		54C2E1C31DBFD81C00246590 /* CommonCrypto.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = CommonCrypto.xcconfig; sourceTree = "<group>"; };
@@ -138,7 +128,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				54C2E1C81DBFF84000246590 /* CommonCrypto.framework in Frameworks */,
-				543C06871DB5289C00FC8257 /* MessagePack.framework in Frameworks */,
 				543C065E1DB50E1000FC8257 /* Starscream.framework in Frameworks */,
 				543C065F1DB50E1000FC8257 /* SwiftyJSON.framework in Frameworks */,
 			);
@@ -167,9 +156,6 @@
 		5424B8721DAD576A00236769 = {
 			isa = PBXGroup;
 			children = (
-				543C06AC1DB5428100FC8257 /* MessagePack.framework.dSYM */,
-				543C06AE1DB5428100FC8257 /* Starscream.framework.dSYM */,
-				543C06AF1DB5428100FC8257 /* SwiftyJSON.framework.dSYM */,
 				5424B87E1DAD576A00236769 /* Swamp */,
 				54C2E1BC1DBFD79400246590 /* CommonCrypto */,
 				5424B87D1DAD576A00236769 /* Products */,
@@ -452,7 +438,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0800;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = iscriptology;
 				TargetAttributes = {
 					5424B87B1DAD576A00236769 = {
@@ -528,7 +514,6 @@
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/Starscream.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftyJSON.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/MessagePack.framework",
 			);
 			outputPaths = (
 			);
@@ -608,7 +593,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -616,7 +603,12 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -662,7 +654,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -670,7 +664,12 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -877,6 +876,7 @@
 				54C2E1C11DBFD79400246590 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
