@@ -31,7 +31,7 @@ public typealias ErrorPublishCallback = (_ details: [String: Any], _ error: Stri
 // TODO: Expose only an interface (like Cancellable) to user
 open class Subscription {
     fileprivate let session: SwampSession
-    internal let subscription: Int
+    let subscription: Int
     internal let eventCallback: EventCallback
     fileprivate var isActive: Bool = true
     
