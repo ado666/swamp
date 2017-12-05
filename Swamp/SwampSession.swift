@@ -8,6 +8,7 @@ import SwiftyJSON
 // MARK: Call callbacks
 public typealias CallCallback = (_ details: [String: Any], _ results: [Any]?, _ kwResults: [String: Any]?) -> Void
 public typealias ErrorCallCallback = (_ details: [String: Any], _ error: String, _ args: [Any]?, _ kwargs: [String: Any]?) -> Void
+
 // MARK: Callee callbacks
 // For now callee is irrelevant
 //public typealias RegisterCallback = (registration: Registration) -> Void
@@ -15,12 +16,14 @@ public typealias ErrorCallCallback = (_ details: [String: Any], _ error: String,
 //public typealias SwampProc = (args: [AnyObject]?, kwargs: [String: AnyObject]?) -> AnyObject
 //public typealias UnregisterCallback = () -> Void
 //public typealias ErrorUnregsiterCallback = (details: [String: AnyObject], error: String) -> Void
+
 // MARK: Subscribe callbacks
 public typealias SubscribeCallback = (_ subscription: Subscription) -> Void
 public typealias ErrorSubscribeCallback = (_ details: [String: Any], _ error: String) -> Void
 public typealias EventCallback = (_ details: [String: Any], _ results: [Any]?, _ kwResults: [String: Any]?) -> Void
 public typealias UnsubscribeCallback = () -> Void
 public typealias ErrorUnsubscribeCallback = (_ details: [String: Any], _ error: String) -> Void
+
 // MARK: Publish callbacks
 public typealias PublishCallback = () -> Void
 public typealias ErrorPublishCallback = (_ details: [String: Any], _ error: String) -> Void
@@ -28,10 +31,10 @@ public typealias ErrorPublishCallback = (_ details: [String: Any], _ error: Stri
 // TODO: Expose only an interface (like Cancellable) to user
 open class Subscription {
     fileprivate let session: SwampSession
-    internal let subscription: Int
+    public let subscription: Int
     internal let eventCallback: EventCallback
     fileprivate var isActive: Bool = true
-
+    
     internal init(session: SwampSession, subscription: Int, onEvent: @escaping EventCallback) {
         self.session = session
         self.subscription = subscription
@@ -58,10 +61,13 @@ open class Subscription {
 public protocol SwampSessionDelegate {
     func swampSessionHandleChallenge(_ authMethod: String, extra: [String: Any]) -> String
     func swampSessionConnected(_ session: SwampSession, sessionId: Int)
-    func swampSessionEnded(_ reason: String)
+    func swampSessionEnded(_ error: Error?, _ reason: String?)
 }
 
 open class SwampSession: SwampTransportDelegate {
+    
+    public static let swampVersion = "Swamp/0.2.6"
+
     // MARK: Public typealiases
 
     // MARK: delegate
@@ -70,7 +76,7 @@ open class SwampSession: SwampTransportDelegate {
     // MARK: Constants
     // No callee role for now
     fileprivate let supportedRoles: [SwampRole] = [SwampRole.Caller, SwampRole.Subscriber, SwampRole.Publisher]
-    fileprivate let clientName = "Swamp-dev-0.1.0"
+    fileprivate let clientName = swampVersion
 
     // MARK: Members
     fileprivate let realm: String
@@ -87,6 +93,9 @@ open class SwampSession: SwampTransportDelegate {
     fileprivate var serializer: SwampSerializer?
     fileprivate var sessionId: Int?
     fileprivate var routerSupportedRoles: [SwampRole]?
+
+    // MARK: serial queue for issuing requests (call, subscribe, unsubscribe)
+    fileprivate let requestQueue = DispatchQueue(label: "swamp.requestQueue")
 
     // MARK: Call role
     //                         requestId
@@ -117,6 +126,10 @@ open class SwampSession: SwampTransportDelegate {
 
     // MARK: Public API
 
+    public func setHeaders(connectHeaders : [String : String]) {
+        self.transport.setConnectHeaders(headers: connectHeaders)
+    }
+    
     final public func isConnected() -> Bool {
         return self.sessionId != nil
     }
@@ -127,15 +140,19 @@ open class SwampSession: SwampTransportDelegate {
 
     final public func disconnect(_ reason: String="wamp.error.close_realm") {
         self.sendMessage(GoodbyeSwampMessage(details: [:], reason: reason))
+        self.transport.disconnect("closed by client")
     }
 
     // MARK: Caller role
     open func call(_ proc: String, options: [String: Any]=[:], args: [Any]?=nil, kwargs: [String: Any]?=nil, onSuccess: @escaping CallCallback, onError: @escaping ErrorCallCallback) {
-        let callRequestId = self.generateRequestId()
-        // Tell router to dispatch call
-        self.sendMessage(CallSwampMessage(requestId: callRequestId, options: options, proc: proc, args: args, kwargs: kwargs))
-        // Store request ID to handle result
-        self.callRequests[callRequestId] = (callback: onSuccess, errorCallback: onError )
+        
+        self.requestQueue.async {
+            let callRequestId = self.generateRequestId()
+            // Tell router to dispatch call
+            self.sendMessage(CallSwampMessage(requestId: callRequestId, options: options, proc: proc, args: args, kwargs: kwargs))
+            // Store request ID to handle result
+            self.callRequests[callRequestId] = (callback: onSuccess, errorCallback: onError )
+        }
     }
 
     // MARK: Callee role
@@ -146,57 +163,60 @@ open class SwampSession: SwampTransportDelegate {
     // MARK: Subscriber role
 
     open func subscribe(_ topic: String, options: [String: Any]=[:], onSuccess: @escaping SubscribeCallback, onError: @escaping ErrorSubscribeCallback, onEvent: @escaping EventCallback) {
-        // TODO: assert topic is a valid WAMP uri
-        let subscribeRequestId = self.generateRequestId()
-        // Tell router to subscribe client on a topic
-        self.sendMessage(SubscribeSwampMessage(requestId: subscribeRequestId, options: options, topic: topic))
-        // Store request ID to handle result
-        self.subscribeRequests[subscribeRequestId] = (callback: onSuccess, errorCallback: onError, eventCallback: onEvent)
+        self.requestQueue.async {
+            // TODO: assert topic is a valid WAMP uri
+            let subscribeRequestId = self.generateRequestId()
+            // Tell router to subscribe client on a topic
+            self.sendMessage(SubscribeSwampMessage(requestId: subscribeRequestId, options: options, topic: topic))
+            // Store request ID to handle result
+            self.subscribeRequests[subscribeRequestId] = (callback: onSuccess, errorCallback: onError, eventCallback: onEvent)
+        }
     }
 
-    // Internal because only a Subscription object can call this
-    internal func unsubscribe(_ subscription: Int, onSuccess: @escaping UnsubscribeCallback, onError: @escaping ErrorUnsubscribeCallback) {
-        let unsubscribeRequestId = self.generateRequestId()
-        // Tell router to unsubscribe me from some subscription
-        self.sendMessage(UnsubscribeSwampMessage(requestId: unsubscribeRequestId, subscription: subscription))
-        // Store request ID to handle result
-        self.unsubscribeRequests[unsubscribeRequestId] = (subscription, onSuccess, onError)
+    open func unsubscribe(_ subscription: Int, onSuccess: @escaping UnsubscribeCallback, onError: @escaping ErrorUnsubscribeCallback) {
+        
+        self.requestQueue.async {
+            let unsubscribeRequestId = self.generateRequestId()
+            // Tell router to unsubscribe me from some subscription
+            self.sendMessage(UnsubscribeSwampMessage(requestId: unsubscribeRequestId, subscription: subscription))
+            // Store request ID to handle result
+            self.unsubscribeRequests[unsubscribeRequestId] = (subscription, onSuccess, onError)
+        }
     }
 
     // MARK: Publisher role
     // without acknowledging
     open func publish(_ topic: String, options: [String: Any]=[:], args: [Any]?=nil, kwargs: [String: Any]?=nil) {
-        // TODO: assert topic is a valid WAMP uri
-        let publishRequestId = self.generateRequestId()
-        // Tell router to publish the event
-        self.sendMessage(PublishSwampMessage(requestId: publishRequestId, options: options, topic: topic, args: args, kwargs: kwargs))
-        // We don't need to store the request, because it's unacknowledged anyway
+
+        self.requestQueue.async {
+            // TODO: assert topic is a valid WAMP uri
+            let publishRequestId = self.generateRequestId()
+            // Tell router to publish the event
+            self.sendMessage(PublishSwampMessage(requestId: publishRequestId, options: options, topic: topic, args: args, kwargs: kwargs))
+            // We don't need to store the request, because it's unacknowledged anyway
+        }
     }
 
     // with acknowledging
     open func publish(_ topic: String, options: [String: Any]=[:], args: [Any]?=nil, kwargs: [String: Any]?=nil, onSuccess: @escaping PublishCallback, onError: @escaping ErrorPublishCallback) {
-        // add acknowledge to options, so we get callbacks
-        var options = options
-        options["acknowledge"] = true
-        // TODO: assert topic is a valid WAMP uri
-        let publishRequestId = self.generateRequestId()
-        // Tell router to publish the event
-        self.sendMessage(PublishSwampMessage(requestId: publishRequestId, options: options, topic: topic, args: args, kwargs: kwargs))
-        // Store request ID to handle result
-        self.publishRequests[publishRequestId] = (callback: onSuccess, errorCallback: onError)
+
+        self.requestQueue.async {
+            // add acknowledge to options, so we get callbacks
+            var options = options
+            options["acknowledge"] = true
+            // TODO: assert topic is a valid WAMP uri
+            let publishRequestId = self.generateRequestId()
+            // Tell router to publish the event
+            self.sendMessage(PublishSwampMessage(requestId: publishRequestId, options: options, topic: topic, args: args, kwargs: kwargs))
+            // Store request ID to handle result
+            self.publishRequests[publishRequestId] = (callback: onSuccess, errorCallback: onError)
+        }
     }
 
     // MARK: SwampTransportDelegate
 
     open func swampTransportDidDisconnect(_ error: NSError?, reason: String?) {
-        if reason != nil {
-            self.delegate?.swampSessionEnded(reason!)
-        }
-        else if error != nil {
-            self.delegate?.swampSessionEnded("Unexpected error: \(error!.description)")
-        } else {
-            self.delegate?.swampSessionEnded("Unknown error.")
-        }
+        self.delegate?.swampSessionEnded(error, reason)
     }
 
     open func swampTransportDidConnectWithSerializer(_ serializer: SwampSerializer) {
@@ -265,7 +285,7 @@ open class SwampSession: SwampTransportDelegate {
             if let (callback, _) = self.callRequests.removeValue(forKey: requestId) {
                 callback(message.details, message.results, message.kwResults)
             } else {
-                // TODO: log this erroneous situation
+                print("No callback found for request ID \(requestId)")
             }
         // MARK: Subscribe role
         case let message as SubscribedSwampMessage:
@@ -359,7 +379,8 @@ open class SwampSession: SwampTransportDelegate {
     }
 
     fileprivate func generateRequestId() -> Int {
-        self.currRequestId += 1
+        // for thread safety this should only be called from the requestQueue
+        self.currRequestId = self.currRequestId + 1
         return self.currRequestId
     }
 }

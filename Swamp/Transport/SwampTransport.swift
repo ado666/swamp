@@ -19,4 +19,5 @@ public protocol SwampTransport {
     func connect()
     func disconnect(_ reason: String)
     func sendData(_ data: Data)
+    func setConnectHeaders(headers: [String : String])
 }

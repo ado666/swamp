@@ -1,0 +1,11 @@
+//
+//  CommonCrypto.xcconfig
+//  SwampFramework
+//
+//  Created by Eli Burke on 10/25/16.
+//  Copyright © 2016 iscriptology. All rights reserved.
+//
+
+MODULEMAP_FILE[sdk=iphoneos*]        = $(SRCROOT)/CommonCrypto/iphoneos.modulemap
+MODULEMAP_FILE[sdk=iphonesimulator*] = $(SRCROOT)/CommonCrypto/iphonesimulator.modulemap
+MODULEMAP_FILE[sdk=macosx*]          = $(SRCROOT)/CommonCrypto/macosx.modulemap

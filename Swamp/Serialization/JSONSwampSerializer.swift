@@ -18,7 +18,8 @@ open class JSONSwampSerializer: SwampSerializer {
         do {
             return try json.rawData()
         }
-        catch {
+        catch let err as NSError {
+            print("error = \(err.localizedDescription)")
             return nil
         }
     }

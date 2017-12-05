@@ -9,7 +9,8 @@
 enum SwampMessages: Int {
 
     // MARK: Basic profile messages
-
+    case invalid_message_type = 0
+    
     case hello = 1
     case welcome = 2
     case abort = 3
@@ -79,13 +80,24 @@ enum SwampMessages: Int {
         SwampMessages.unsubscribed: UnsubscribedSwampMessage.init
     ]
 
-
     static func createMessage(_ payload: [Any]) -> SwampMessage? {
-        if let messageType = SwampMessages(rawValue: payload[0] as! Int) {
-            if let messageFactory = mapping1[messageType] {
+        var messageType: SwampMessages?
+
+        if let mapping = payload[0] as? UInt64 {
+            messageType = SwampMessages(rawValue: Int(truncatingBitPattern: mapping))
+        } else if let mapping = payload[0] as? Int64 {
+            messageType = SwampMessages(rawValue: Int(truncatingBitPattern: mapping))
+        } else if let mapping = payload[0] as? UInt {
+            messageType = SwampMessages(rawValue: Int(mapping))
+        } else if let mapping = payload[0] as? Int {
+            messageType = SwampMessages(rawValue: mapping)
+        }
+    
+        if let _ = messageType {
+            if let messageFactory = mapping1[messageType!] {
                 return messageFactory(Array(payload[1..<payload.count]))
             }
-            if let messageFactory = mapping2[messageType] {
+            if let messageFactory = mapping2[messageType!] {
                 return messageFactory(Array(payload[1..<payload.count]))
             }
         }
