@@ -84,9 +84,9 @@ enum SwampMessages: Int {
         var messageType: SwampMessages?
 
         if let mapping = payload[0] as? UInt64 {
-            messageType = SwampMessages(rawValue: Int(truncatingBitPattern: mapping))
+            messageType = SwampMessages(rawValue: Int(truncatingIfNeeded: mapping))
         } else if let mapping = payload[0] as? Int64 {
-            messageType = SwampMessages(rawValue: Int(truncatingBitPattern: mapping))
+            messageType = SwampMessages(rawValue: Int(truncatingIfNeeded: mapping))
         } else if let mapping = payload[0] as? UInt {
             messageType = SwampMessages(rawValue: Int(mapping))
         } else if let mapping = payload[0] as? Int {
