@@ -215,7 +215,7 @@ open class SwampSession: SwampTransportDelegate {
 
     // MARK: SwampTransportDelegate
 
-    open func swampTransportDidDisconnect(_ error: NSError?, reason: String?) {
+    open func swampTransportDidDisconnect(_ error: Error?, reason: String?) {
         self.delegate?.swampSessionEnded(error, reason)
     }
 

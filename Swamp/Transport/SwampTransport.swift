@@ -10,7 +10,7 @@ import Foundation
 
 public protocol SwampTransportDelegate: class {
     func swampTransportDidConnectWithSerializer(_ serializer: SwampSerializer)
-    func swampTransportDidDisconnect(_ error: NSError?, reason: String?)
+    func swampTransportDidDisconnect(_ error: Error?, reason: String?)
     func swampTransportReceivedData(_ data: Data)
 }
 
