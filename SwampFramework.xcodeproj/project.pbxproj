@@ -48,7 +48,6 @@
 		54C2E1C81DBFF84000246590 /* CommonCrypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54C2E1BB1DBFD79400246590 /* CommonCrypto.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		54C2E1CA1DBFFDA000246590 /* SwampAuthMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C2E1C91DBFFDA000246590 /* SwampAuthMethod.swift */; };
 		54C2E1CB1DBFFDA000246590 /* SwampAuthMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C2E1C91DBFFDA000246590 /* SwampAuthMethod.swift */; };
-		54EDA5281F6C55D400682263 /* libapple_crypto.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 54EDA5271F6C55D400682263 /* libapple_crypto.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -126,7 +125,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				54EDA5281F6C55D400682263 /* libapple_crypto.tbd in Frameworks */,
 				54C2E1C81DBFF84000246590 /* CommonCrypto.framework in Frameworks */,
 				543C065E1DB50E1000FC8257 /* Starscream.framework in Frameworks */,
 				543C065F1DB50E1000FC8257 /* SwiftyJSON.framework in Frameworks */,
