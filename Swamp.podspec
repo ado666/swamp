@@ -41,5 +41,5 @@ the WAMP WebSocket subprotocol implemented purely in Swift using Starscream, Swi
   # s.frameworks = 'UIKit', 'MapKit'
   s.dependency 'SwiftyJSON', '~>4.0'
   s.dependency 'Starscream', '~>3.0.2'
-  s.dependency 'CryptoSwift', '~>0.6.0'
+  s.dependency 'CommonCrypto', '~>0.6.0'
 end
