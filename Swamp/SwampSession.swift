@@ -281,7 +281,7 @@ open class SwampSession: SwampTransportDelegate {
         let requestId = message.requestId
         if let (callback, _, onFire, proc, queue) = self.registerRequests.removeValue(forKey: requestId) {
             // Notify user and delegate him to unsubscribe this subscription
-            let registration = Registration(session: self, registration: message.registration, onFire: onFire, proc: proc, queue: queue)
+            let registration = Registration(session: self, registration: message.registration as NSNumber, onFire: onFire, proc: proc, queue: queue)
             queue.async {
                 callback(registration)
             }

@@ -28,12 +28,12 @@ open class Registration {
         self.isActive = false
     }
 
-    open func cancel(_ onSuccess: @escaping UnregisterCallback, onError: @escaping ErrorUnregsiterCallback) {
-        if !self.isActive {
-            onError([:], "Registration already inactive.")
-        }
-        self.session.unregister(registration, onSuccess: onSuccess, onError: onError, queue: self.queue)
-    }
+//    open func cancel(_ onSuccess: @escaping UnregisterCallback, onError: @escaping ErrorUnregsiterCallback) {
+//        if !self.isActive {
+//            onError([:], "Registration already inactive.")
+//        }
+//        self.session.unregister(registration, onSuccess: onSuccess, onError: onError, queue: self.queue)
+//    }
 
     open func changeOnFire(callback: @escaping SwampProc) {
         self.onFire = callback
