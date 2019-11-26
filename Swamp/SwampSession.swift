@@ -348,7 +348,7 @@ open class SwampSession: SwampTransportDelegate {
             } else {
                 // TODO: log this erroneous situation
             }
-        case SwampMessages.register:
+        case let message as RegisteredSwampMessage:
         let requestId = message.requestId
             if let (callback, _, onFire, proc, queue) = self.registerRequests.removeValue(forKey: requestId) {
             // Notify user and delegate him to unsubscribe this subscription
