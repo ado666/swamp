@@ -106,6 +106,7 @@ open class SwampSession: SwampTransportDelegate {
     
     fileprivate var registerRequests: [Int: (callback: RegisterCallback, errorCallback: ErrorRegisterCallback, eventCallback: SwampProc, proc: String, queue: DispatchQueue)] = [:]
     //                          registration
+    fileprivate var registrations: [NSNumber: Registration] = [:]
 
     // MARK: Subscriber role
     //                              requestId
