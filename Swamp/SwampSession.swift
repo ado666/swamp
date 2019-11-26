@@ -10,6 +10,9 @@ public typealias CallCallback = (_ details: [String: Any], _ results: [Any]?, _ 
 public typealias ErrorCallCallback = (_ details: [String: Any], _ error: String, _ args: [Any]?, _ kwargs: [String: Any]?) -> Void
 
 // MARK: Callee callbacks
+public typealias RegisterCallback = (_ registration: Registration) -> Void
+public typealias ErrorRegisterCallback = (_ details: [String: Any], _ error: String) -> Void
+public typealias SwampProc = (_ details: [String: Any], _ args: [Any]?, _ kwargs: [String: Any]?) -> Any
 // For now callee is irrelevant
 //public typealias RegisterCallback = (registration: Registration) -> Void
 //public typealias ErrorRegisterCallback = (details: [String: AnyObject], error: String) -> Void
