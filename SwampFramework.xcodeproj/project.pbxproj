@@ -55,6 +55,9 @@
 		6A0ACDFC233A19AF00A52EC0 /* SwiftyJSON.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 543C065C1DB50E1000FC8257 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6A0ACDFD233A1ABE00A52EC0 /* CommonCrypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54C2E1BB1DBFD79400246590 /* CommonCrypto.framework */; };
 		6A0ACDFE233A1ABE00A52EC0 /* CommonCrypto.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 54C2E1BB1DBFD79400246590 /* CommonCrypto.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6A1C8AB6238D46D20092F459 /* Registration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A1C8AB5238D46D20092F459 /* Registration.swift */; };
+		6A1C8AB7238D46D20092F459 /* Registration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A1C8AB5238D46D20092F459 /* Registration.swift */; };
+		6A1C8AB8238D46D20092F459 /* Registration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A1C8AB5238D46D20092F459 /* Registration.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -149,6 +152,7 @@
 		6A0ACDE5233A16CB00A52EC0 /* Swamp_TVos.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Swamp_TVos.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A0ACDE7233A16CB00A52EC0 /* Swamp_TVos.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Swamp_TVos.h; sourceTree = "<group>"; };
 		6A0ACDE8233A16CB00A52EC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6A1C8AB5238D46D20092F459 /* Registration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Registration.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,6 +229,7 @@
 				5424B8B01DAD57F800236769 /* SwampRole.swift */,
 				5424B8B11DAD57F800236769 /* SwampSession.swift */,
 				5424B8B21DAD57F800236769 /* Transport */,
+				6A1C8AB5238D46D20092F459 /* Registration.swift */,
 			);
 			path = Swamp;
 			sourceTree = "<group>";
@@ -529,6 +534,7 @@
 					6A0ACDE4233A16CB00A52EC0 = {
 						CreatedOnToolsVersion = 11.0;
 						DevelopmentTeam = Z5DPE5M3XD;
+						LastSwiftMigration = 1120;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -613,6 +619,7 @@
 				54C2E1CA1DBFFDA000246590 /* SwampAuthMethod.swift in Sources */,
 				5424B8D51DAD57F800236769 /* WebSocketSwampTransport.swift in Sources */,
 				5424B8B51DAD57F800236769 /* SwampCraAuthHelper.swift in Sources */,
+				6A1C8AB7238D46D20092F459 /* Registration.swift in Sources */,
 				5424B8CF1DAD57F800236769 /* JSONSwampSerializer.swift in Sources */,
 				5424B8BC1DAD57F800236769 /* EventSwampMessage.swift in Sources */,
 				5424B8D41DAD57F800236769 /* SwampTransport.swift in Sources */,
@@ -651,6 +658,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A1C8AB8238D46D20092F459 /* Registration.swift in Sources */,
 				54C2E1CB1DBFFDA000246590 /* SwampAuthMethod.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -666,6 +674,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A1C8AB6238D46D20092F459 /* Registration.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -955,6 +964,7 @@
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
@@ -979,6 +989,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
@@ -990,6 +1001,7 @@
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;

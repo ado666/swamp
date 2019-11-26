@@ -164,7 +164,7 @@ open class SwampSession: SwampTransportDelegate {
     // MARK: Callee role
     // For now callee is irrelevant
     public func register(_ proc: String,
-                         options: [String: Any] = [:],
+                         options: [String: AnyObject] = [:],
                          using queue: DispatchQueue = .main,
                          onSuccess: @escaping RegisterCallback,
                          onError: @escaping ErrorRegisterCallback,
@@ -392,7 +392,7 @@ open class SwampSession: SwampTransportDelegate {
                 } else {
                     // TODO: log this erroneous situation
                 }
-            case SwampMessageType.register:
+            case SwampMessages.register:
             if let (_, errorCallback, _, _, queue) = self.registerRequests.removeValue(forKey: message.requestId) {
                 queue.async {
                     errorCallback(message.details, message.error)
