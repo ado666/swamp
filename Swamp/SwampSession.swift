@@ -100,6 +100,9 @@ open class SwampSession: SwampTransportDelegate {
     // MARK: Call role
     //                         requestId
     fileprivate var callRequests: [Int: (callback: CallCallback, errorCallback: ErrorCallCallback)] = [:]
+    
+    fileprivate var registerRequests: [Int: (callback: RegisterCallback, errorCallback: ErrorRegisterCallback, eventCallback: SwampProc, proc: String, queue: DispatchQueue)] = [:]
+    //                          registration
 
     // MARK: Subscriber role
     //                              requestId
@@ -157,8 +160,20 @@ open class SwampSession: SwampTransportDelegate {
 
     // MARK: Callee role
     // For now callee is irrelevant
-    // public func register(proc: String, options: [String: AnyObject]=[:], onSuccess: RegisterCallback, onError: ErrorRegisterCallback, onFire: SwampProc) {
-    // }
+    public func register(proc: String, options: [String: AnyObject]=[:], onSuccess: RegisterCallback, onError: ErrorRegisterCallback, onFire: SwampProc) {
+        
+        if !self.isConnected() {
+            debugPrint("[SwiftWamp.SwampSession.register][ERROR] - You try to register \(proc) but you're session id is nil")
+            return
+        }
+        // TODO: assert topic is a valid WAMP uri
+        let requestId = self.generateRequestId()
+        // Tell router to register client on a procedure
+        self.sendMessage(RegisterSwampMessage(requestId: requestId, options: options, proc: proc))
+
+        // Store request ID to handle result
+        self.registerRequests[requestId] = (callback: onSuccess, errorCallback: onError, eventCallback: onFire, proc: proc, queue: queue)
+    }
 
     // MARK: Subscriber role
 
@@ -255,6 +270,22 @@ open class SwampSession: SwampTransportDelegate {
         }
     }
 
+    fileprivate func handleMessage(_ message: RegisteredSwampMessage) {
+        let requestId = message.requestId
+        if let (callback, _, onFire, proc, queue) = self.registerRequests.removeValue(forKey: requestId) {
+            // Notify user and delegate him to unsubscribe this subscription
+            let registration = Registration(session: self, registration: message.registration, onFire: onFire, proc: proc, queue: queue)
+            queue.async {
+                callback(registration)
+            }
+            // Subscription succeeded, we should store event callback for when it's fired
+            self.registrations[message.registration] = registration
+        } else {
+            debugPrint("[SwiftWamp.SwampSession.handleMessage][ERROR] - A Registered message is received, but no entry found for key \(requestId) in registerRequests")
+        }
+
+    }
+    
     fileprivate func handleMessage(_ message: SwampMessage) {
         switch message {
         // MARK: Auth responses
@@ -354,6 +385,14 @@ open class SwampSession: SwampTransportDelegate {
                 } else {
                     // TODO: log this erroneous situation
                 }
+            case SwampMessageType.register:
+            if let (_, errorCallback, _, _, queue) = self.registerRequests.removeValue(forKey: message.requestId) {
+                queue.async {
+                    errorCallback(message.details, message.error)
+                }
+            } else {
+                debugPrint("[SwiftWamp.SwampSession.handleMessage][ERROR] - An Error message with register request type is received, but no entry found for key \(message.requestId) in registerRequests")
+            }
             default:
                 return
             }
