@@ -160,19 +160,23 @@ open class SwampSession: SwampTransportDelegate {
 
     // MARK: Callee role
     // For now callee is irrelevant
-    public func register(proc: String, options: [String: AnyObject]=[:], onSuccess: RegisterCallback, onError: ErrorRegisterCallback, onFire: SwampProc) {
-        
-        if !self.isConnected() {
-            debugPrint("[SwiftWamp.SwampSession.register][ERROR] - You try to register \(proc) but you're session id is nil")
-            return
-        }
-        // TODO: assert topic is a valid WAMP uri
-        let requestId = self.generateRequestId()
-        // Tell router to register client on a procedure
-        self.sendMessage(RegisterSwampMessage(requestId: requestId, options: options, proc: proc))
+    public func register(_ proc: String,
+                         options: [String: Any] = [:],
+                         using queue: DispatchQueue = .main,
+                         onSuccess: @escaping RegisterCallback,
+                         onError: @escaping ErrorRegisterCallback,
+                         onFire: @escaping SwampProc) {
+       if !self.isConnected() {
+           debugPrint("[SwiftWamp.SwampSession.register][ERROR] - You try to register \(proc) but you're session id is nil")
+           return
+       }
+       // TODO: assert topic is a valid WAMP uri
+       let requestId = self.generateRequestId()
+       // Tell router to register client on a procedure
+       self.sendMessage(RegisterSwampMessage(requestId: requestId, options: options, proc: proc))
 
-        // Store request ID to handle result
-        self.registerRequests[requestId] = (callback: onSuccess, errorCallback: onError, eventCallback: onFire, proc: proc, queue: queue)
+       // Store request ID to handle result
+       self.registerRequests[requestId] = (callback: onSuccess, errorCallback: onError, eventCallback: onFire, proc: proc, queue: queue)
     }
 
     // MARK: Subscriber role
