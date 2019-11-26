@@ -357,7 +357,7 @@ open class SwampSession: SwampTransportDelegate {
                 callback(registration)
             }
             // Subscription succeeded, we should store event callback for when it's fired
-            self.registrations[message.registration] = registration
+            self.registrations[message.registration as NSNumber] = registration
         }
             else {
             debugPrint("[SwiftWamp.SwampSession.handleMessage][ERROR] - An Error message with register request type is received, but no entry found for key \(message.requestId) in registerRequests")
