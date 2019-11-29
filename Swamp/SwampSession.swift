@@ -352,18 +352,18 @@ open class SwampSession: SwampTransportDelegate {
             if let registration = self.registrations[message.registration as NSNumber] {
                 var details = message.details
                 if details.count > 0 {
-                    details["procedure"] = registration.proc
+                    details["procedure"] = registration.proc as AnyObject
                 }
                 registration.queue.async {
                     let result = registration.onFire(details, message.args, message.kwargs)
                     if let kwargs = result as? [String: Any] {
-                        self.sendMessage(YieldSwampMessage(requestId: message.requestId, options: [:], args: [], kwargs: kwargs))
+                        self.sendMessage(YieldSwampMessage(requestId: message.requestId, options: [:], args: [], kwargs: kwargs as [String : AnyObject]))
                     }
                     else if let results = result as? [Any] {
-                        self.sendMessage(YieldSwampMessage(requestId: message.requestId, options: [:], args: results, kwargs: nil))
+                        self.sendMessage(YieldSwampMessage(requestId: message.requestId, options: [:], args: results as [AnyObject], kwargs: nil))
                     }
                     else {
-                        self.sendMessage(YieldSwampMessage(requestId: message.requestId, options: [:], args: [result], kwargs: nil))
+                        self.sendMessage(YieldSwampMessage(requestId: message.requestId, options: [:], args: result as AnyObject, kwargs: nil))
                     }
                 }
             } else {
