@@ -363,7 +363,7 @@ open class SwampSession: SwampTransportDelegate {
                         self.sendMessage(YieldSwampMessage(requestId: message.requestId, options: [:], args: results as [AnyObject], kwargs: nil))
                     }
                     else {
-                        self.sendMessage(YieldSwampMessage(requestId: message.requestId, options: [:], args: result as! AnyObject, kwargs: nil))
+//                        self.sendMessage(YieldSwampMessage(requestId: message.requestId, options: [:], args: result as! AnyObject, kwargs: nil))
                     }
                 }
             } else {
