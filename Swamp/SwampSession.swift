@@ -348,18 +348,39 @@ open class SwampSession: SwampTransportDelegate {
             } else {
                 // TODO: log this erroneous situation
             }
-        case let message as RegisteredSwampMessage:
-        let requestId = message.requestId
-            if let (callback, _, onFire, proc, queue) = self.registerRequests.removeValue(forKey: requestId) {
-            // Notify user and delegate him to unsubscribe this subscription
-            let registration = Registration(session: self, registration: message.registration as NSNumber, onFire: onFire, proc: proc, queue: queue)
-            queue.async {
-                callback(registration)
+        case let message as InvocationSwampMessage:
+            if let registration = self.registrations[message.registration] {
+                var details = message.details
+                if details.count > 0 {
+                    details["procedure"] = registration.proc
+                }
+                registration.queue.async {
+                    let result = registration.onFire(details, message.args, message.kwargs)
+                    if let kwargs = result as? [String: Any] {
+                        self.sendMessage(YieldSwampMessage(requestId: message.requestId, options: [:], args: [], kwargs: kwargs))
+                    }
+                    else if let results = result as? [Any] {
+                        self.sendMessage(YieldSwampMessage(requestId: message.requestId, options: [:], args: results, kwargs: nil))
+                    }
+                    else {
+                        self.sendMessage(YieldSwampMessage(requestId: message.requestId, options: [:], args: [result], kwargs: nil))
+                    }
+                }
+            } else {
+                debugPrint("[SwiftWamp.SwampSession.handleMessage][ERROR] - An Invocation message is received, but no entry found for key \(message.registration) in registrations")
             }
-            // Subscription succeeded, we should store event callback for when it's fired
-            self.registrations[message.registration as NSNumber] = registration
-        }
-            else {
+        case let message as RegisteredSwampMessage:
+            let requestId = message.requestId
+                if let (callback, _, onFire, proc, queue) = self.registerRequests.removeValue(forKey: requestId) {
+                // Notify user and delegate him to unsubscribe this subscription
+                let registration = Registration(session: self, registration: message.registration as NSNumber, onFire: onFire, proc: proc, queue: queue)
+                queue.async {
+                    callback(registration)
+                }
+                // Subscription succeeded, we should store event callback for when it's fired
+                self.registrations[message.registration as NSNumber] = registration
+            }
+        else {
             debugPrint("[SwiftWamp.SwampSession.handleMessage][ERROR] - An Error message with register request type is received, but no entry found for key \(message.requestId) in registerRequests")
         }
 
