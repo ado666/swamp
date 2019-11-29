@@ -349,7 +349,7 @@ open class SwampSession: SwampTransportDelegate {
                 // TODO: log this erroneous situation
             }
         case let message as InvocationSwampMessage:
-            if let registration = self.registrations[message.registration] {
+            if let registration = self.registrations[message.registration as NSNumber] {
                 var details = message.details
                 if details.count > 0 {
                     details["procedure"] = registration.proc
